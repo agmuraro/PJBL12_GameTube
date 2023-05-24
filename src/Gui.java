@@ -35,15 +35,15 @@ public class Gui {
         frame.setIconImage(icone.getImage());
 
         JMenuBar mb = new JMenuBar();
+        JMenu m0 = new JMenu("Perfil");
         JMenu m1 = new JMenu("Biblioteca");
         JMenu m2 = new JMenu("Loja");
         JMenu m3 = new JMenu("Lista de Desejos");
 
+
         JMenuItem m12 = new JMenuItem("Ver Jogos");
         JMenuItem m13 = new JMenuItem("Carrinho");
-
         JMenuItem m22 = new JMenuItem("Promoções");
-
         JMenuItem m32 = new JMenuItem("Ver Lista");
 
         m1.add(m12);
@@ -66,13 +66,26 @@ public class Gui {
         JMenuItem m31 = new JMenuItem("Abrir Lista de Desejos");
         m31.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                label.setVisible(false);
                 exibirImagemJogo("img_1.png");
             }
         });
+
+        JMenuItem m01 = new JMenuItem("Abrir Perfil");
+
+        m01.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                label.setVisible(true);
+                labelImagemJogo.setVisible(false);
+            }
+        });
+
         m3.add(m31);
         mb.add(m1);
         mb.add(m2);
         mb.add(m3);
+        mb.add(m0);
+        m0.add(m01);
 
         frame.getContentPane().add(BorderLayout.NORTH, mb);
 
