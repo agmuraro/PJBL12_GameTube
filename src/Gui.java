@@ -10,10 +10,26 @@ public class Gui {
 
     public static void main(String args[]) {
 
+        ImageIcon image = new ImageIcon("img_2.png");
+
+        JLabel label = new JLabel();
+        label.setText("Arthur Muraro");
+        label.setIcon(image);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.BOTTOM);
+        label.setForeground(Color.WHITE);
+        label.setIconTextGap(20);
+        label.setVerticalAlignment(JLabel.CENTER);
+        label.setHorizontalAlignment(JLabel.CENTER);
+
+
         JFrame frame = new JFrame("GameTube");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
         frame.getContentPane().setBackground(Color.DARK_GRAY);
+        frame.add(label);
+        frame.setVisible(true);
+
 
         ImageIcon icone = new ImageIcon("img.png");
         frame.setIconImage(icone.getImage());
@@ -41,6 +57,7 @@ public class Gui {
         JMenuItem m21 = new JMenuItem("Abrir Loja");
         m21.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                label.setVisible(false);
                 exibirImagemJogo("img_1.png");
             }
         });
@@ -75,4 +92,6 @@ public class Gui {
         ImageIcon imagemRedimensionadaIcon = new ImageIcon(imagemRedimensionada);
         labelImagemJogo.setIcon(imagemRedimensionadaIcon);
     }
+
+
 }
