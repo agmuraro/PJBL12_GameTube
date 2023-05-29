@@ -1,6 +1,5 @@
 package src;
 
-import src.Perfil;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +11,7 @@ public class Biblioteca extends JFrame {
 
     public Biblioteca() {
 
-        ImageIcon posterUm = new ImageIcon("img_1.png");
+        ImageIcon posterUm = new ImageIcon("image/img_1.png");
 
         JLabel label = new JLabel();
         label.setText("Sonic Mania");
@@ -24,7 +23,7 @@ public class Biblioteca extends JFrame {
         label.setVerticalAlignment(JLabel.CENTER);
         label.setHorizontalAlignment(JLabel.CENTER);
 
-        ImageIcon posterDois = new ImageIcon("img_3.png");
+        ImageIcon posterDois = new ImageIcon("image/img_3.png");
 
         JLabel labelDois = new JLabel();
         labelDois.setText("Portal 2");

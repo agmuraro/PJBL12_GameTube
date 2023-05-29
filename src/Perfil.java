@@ -12,7 +12,7 @@ public class Perfil extends JFrame {
 
     public Perfil() {
 
-        ImageIcon image = new ImageIcon("img_2.png");
+        ImageIcon image = new ImageIcon("image/img_2.png");
 
         JLabel label = new JLabel();
         label.setText("Arthur Muraro");

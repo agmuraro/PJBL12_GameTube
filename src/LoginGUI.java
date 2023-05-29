@@ -1,7 +1,6 @@
 package src;
 
 import java.awt.*;
-import java.awt.geom.*;
 import javax.swing.*;
 
 public class LoginGUI extends JFrame {
@@ -34,7 +33,7 @@ public class LoginGUI extends JFrame {
                 g2d.fillOval(x, y, size, size);
 
                 // Draw the profile picture
-                ImageIcon profileImage = new ImageIcon("Logo.png");
+                ImageIcon profileImage = new ImageIcon("image/Logo.png");
                 Image img = profileImage.getImage();
                 g2d.drawImage(img, x, y, size, size, this);
 
