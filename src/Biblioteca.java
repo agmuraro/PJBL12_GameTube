@@ -1,3 +1,6 @@
+package src;
+
+import src.Perfil;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

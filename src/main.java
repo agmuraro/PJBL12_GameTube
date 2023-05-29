@@ -1,7 +1,7 @@
-import javax.swing.*;
-import java.awt.*;
+package src;
+import src.Perfil;
 
-public class Main {
+public class main {
     public static void main(String[] args) {
         Perfil janelaPrincipal = new Perfil();
 
