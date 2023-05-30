@@ -36,7 +36,6 @@ public class Biblioteca extends JFrame {
         labelDois.setHorizontalAlignment(JLabel.LEFT);
 
         JFrame frame = new JFrame("GameTube");
-        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
         frame.getContentPane().setBackground(Color.DARK_GRAY);
@@ -57,9 +56,26 @@ public class Biblioteca extends JFrame {
                 new Perfil().setVisible(true);
             }
         });
+        JMenuItem verLoja = new JMenuItem("Ver Loja");
+        verLoja.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new Loja().setVisible(true);
+            }
+        });
+
+        JMenuItem verLista = new JMenuItem("Ver Lista");
+        verLista.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new ListaDesejos().setVisible(true);
+            }
+        });
 
 
         menuPerfil.add(irPerfil);
+        menuLoja.add(verLoja);
+        menuLista.add(verLista);
 
         barraMenu.add(menuLoja);
         barraMenu.add(menuLista);
