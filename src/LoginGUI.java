@@ -57,7 +57,7 @@ public class LoginGUI extends JFrame {
 
         panel.add(topPanel, BorderLayout.NORTH);
 
-        JPanel centerPanel = new JPanel(new GridBagLayout()); // Use GridBagLayout for centerPanel
+        JPanel centerPanel = new JPanel(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.anchor = GridBagConstraints.CENTER;
