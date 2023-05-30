@@ -1,11 +1,23 @@
 package src;
 
+import javax.swing.JTextField;
+import java.io.IOException;
+import java.io.FileWriter;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+
 public class RegistroGUI extends JFrame {
+    private JTextField nameField;
+    private JTextField emailField;
+    private JTextField nicknameField;
+    private JPasswordField passwordField;
+
     public RegistroGUI() {
         setTitle("Registro");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,19 +77,19 @@ public class RegistroGUI extends JFrame {
         gbc.gridy = 1;
         gbc.gridwidth = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        JTextField nameField = new JTextField(20);
+        nameField = new JTextField(20);
         rightPanel.add(nameField, gbc);
 
         gbc.gridy = 2;
-        JTextField nicknameField = new JTextField(20);
+        nicknameField = new JTextField(20);
         rightPanel.add(nicknameField, gbc);
 
         gbc.gridy = 3;
-        JTextField emailField = new JTextField(20);
+        emailField = new JTextField(20);
         rightPanel.add(emailField, gbc);
 
         gbc.gridy = 4;
-        JPasswordField passwordField = new JPasswordField(20);
+        passwordField = new JPasswordField(20);
         rightPanel.add(passwordField, gbc);
 
         gbc.gridy = 5;
@@ -104,6 +116,13 @@ public class RegistroGUI extends JFrame {
             }
         });
 
+        registroButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                registrarUsuario();
+            }
+        });
+
         splitPane.setRightComponent(rightPanel);
 
         panel.add(splitPane, BorderLayout.CENTER);
@@ -115,6 +134,28 @@ public class RegistroGUI extends JFrame {
         setVisible(true);
     }
 
+
+    public void registrarUsuario() {
+
+        Usuario temp = new Usuario(emailField.getText(), passwordField.getText(), nameField.getText(), nicknameField.getText());
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("email", temp.getName());
+        jsonObject.put("email", temp.getEmail());
+        jsonObject.put("senha", temp.getPassword());
+        jsonObject.put("username", temp.getUsername());
+        try {
+            FileWriter escrever = new FileWriter("src/usuarios.json");
+
+            escrever.write(jsonObject.toString());
+
+            escrever.close();
+
+            System.out.println("Data written to the JSON file successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RegistroGUI());
     }
