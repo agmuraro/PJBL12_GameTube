@@ -3,12 +3,12 @@ package src;
 public class Game {
     private String name;
     private String descricao;
-    private Double preco;
+    private Double price;
             
     public Game(String name, String descricao, Double preco) {
         this.name = name;
         this.descricao = descricao;
-        this.preco = preco;
+        this.price = preco;
     }
     
     public String getName() { return name; }
