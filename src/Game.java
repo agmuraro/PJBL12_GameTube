@@ -10,22 +10,17 @@ public class Game {
         this.name = name;
         this.descricao = descricao;
         this.preco = preco;
-        this.image = image
     }
     
-    public void getName { return name }
+    public void getName() { return name }
 
     public void setName(String name) { this.name = name }
 
-    public void getDescricao { return descricao }
+    public void getDescricao() { return descricao }
 
     public void setDescricao(String descricao) { this.descricao = descricao }
 
-    public void getPrice { return price }
+    public void getPrice() { return price }
 
     public void setPrice(Double price) { this.price = price }
-
-    public void getImage { return image }
-
-    public void setImage(Image image) { this.image = image }
 }
