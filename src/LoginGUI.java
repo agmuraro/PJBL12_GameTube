@@ -1,6 +1,14 @@
 package src;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.swing.*;
 
 public class LoginGUI extends JFrame {
@@ -78,6 +86,12 @@ public class LoginGUI extends JFrame {
         gbc.gridwidth = 2;
         loginButton = new JButton("Login");
         centerPanel.add(loginButton, gbc);
+        loginButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                realizarLogin(usernameField.getText(), passwordField.getText());
+            }
+        });
 
         panel.add(centerPanel, BorderLayout.CENTER);
 
@@ -88,6 +102,42 @@ public class LoginGUI extends JFrame {
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    public  void realizarLogin(String identifier, String code) {
+        try{
+            String fileContent = new String(Files.readAllBytes(Paths.get("src/usuarios.json")));
+            JSONArray jsonArray;
+            jsonArray = new JSONArray(fileContent);
+            for (Object item : jsonArray) {
+                if (item instanceof JSONObject){
+                    JSONObject jsonObject = (JSONObject) item;
+                    try {
+
+                        if (identifier.equals(jsonObject.getString("email")) || identifier.equals(jsonObject.getString("username"))){
+                            try {
+                                if (jsonObject.getString("senha").equals(code)) {
+                                    System.out.println("Logado");
+                                } else {
+                                    throw new MyCustomException("senha errada");
+                                }
+                            } catch (MyCustomException e) {
+                                System.out.println(e.getMessage());
+                            }
+                        } else {
+                            throw new MyCustomException("email errado");
+                        }
+
+                    } catch (MyCustomException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+
+    }
+
     }
 
     public static void main(String[] args) {

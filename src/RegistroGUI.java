@@ -1,5 +1,6 @@
 package src;
 
+import src.RegistroAction;
 import javax.swing.JTextField;
 import java.io.IOException;
 import java.io.FileWriter;
@@ -119,7 +120,8 @@ public class RegistroGUI extends JFrame {
         registroButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                registrarUsuario();
+                Usuario temp = new Usuario(emailField.getText(), passwordField.getText(), nameField.getText(), nicknameField.getText());
+                RegistroAction.registrarUsuario(temp);
             }
         });
 
@@ -134,28 +136,6 @@ public class RegistroGUI extends JFrame {
         setVisible(true);
     }
 
-
-    public void registrarUsuario() {
-
-        Usuario temp = new Usuario(emailField.getText(), passwordField.getText(), nameField.getText(), nicknameField.getText());
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("email", temp.getName());
-        jsonObject.put("email", temp.getEmail());
-        jsonObject.put("senha", temp.getPassword());
-        jsonObject.put("username", temp.getUsername());
-        try {
-            FileWriter escrever = new FileWriter("src/usuarios.json");
-
-            escrever.write(jsonObject.toString());
-
-            escrever.close();
-
-            System.out.println("Data written to the JSON file successfully.");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RegistroGUI());
     }
