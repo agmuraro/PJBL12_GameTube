@@ -2,6 +2,7 @@ package src;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import src.LoginAction;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -89,7 +90,19 @@ public class LoginGUI extends JFrame {
         loginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                realizarLogin(usernameField.getText(), passwordField.getText());
+                boolean result = LoginAction.realizarLogin(usernameField.getText(), passwordField.getText());
+                try{
+                    if (result) {
+                        Perfil perfil = new Perfil();
+                        perfil.setVisible(true);
+                        dispose();
+                    } else {
+                        throw new MyCustomException("Login Invalido");
+                }
+
+                } catch (MyCustomException s) {
+                    System.out.println(s.getMessage());
+                }
             }
         });
 
@@ -104,41 +117,6 @@ public class LoginGUI extends JFrame {
         setVisible(true);
     }
 
-    public  void realizarLogin(String identifier, String code) {
-        try{
-            String fileContent = new String(Files.readAllBytes(Paths.get("src/usuarios.json")));
-            JSONArray jsonArray;
-            jsonArray = new JSONArray(fileContent);
-            for (Object item : jsonArray) {
-                if (item instanceof JSONObject){
-                    JSONObject jsonObject = (JSONObject) item;
-                    try {
-
-                        if (identifier.equals(jsonObject.getString("email")) || identifier.equals(jsonObject.getString("username"))){
-                            try {
-                                if (jsonObject.getString("senha").equals(code)) {
-                                    System.out.println("Logado");
-                                } else {
-                                    throw new MyCustomException("senha errada");
-                                }
-                            } catch (MyCustomException e) {
-                                System.out.println(e.getMessage());
-                            }
-                        } else {
-                            throw new MyCustomException("email errado");
-                        }
-
-                    } catch (MyCustomException e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-
-    }
-
-    }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new LoginGUI());

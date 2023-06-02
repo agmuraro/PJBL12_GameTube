@@ -114,6 +114,7 @@ public class RegistroGUI extends JFrame {
                 LoginGUI loginGUI = new LoginGUI();
                 loginGUI.setVisible(true);
                 dispose(); // Fecha a janela atual (RegistroGUI)
+
             }
         });
 
@@ -122,6 +123,9 @@ public class RegistroGUI extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 Usuario temp = new Usuario(emailField.getText(), passwordField.getText(), nameField.getText(), nicknameField.getText());
                 RegistroAction.registrarUsuario(temp);
+                LoginGUI loginGUI = new LoginGUI();
+                loginGUI.setVisible(true);
+                dispose(); // Fecha a janela atual (RegistroGUI)
             }
         });
 
