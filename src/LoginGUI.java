@@ -90,10 +90,10 @@ public class LoginGUI extends JFrame {
         loginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                boolean result = LoginAction.realizarLogin(usernameField.getText(), passwordField.getText());
+                JSONObject Session = LoginAction.realizarLogin(usernameField.getText(), passwordField.getText());
                 try{
-                    if (result) {
-                        Perfil perfil = new Perfil();
+                    if (Session != null) {
+                        Perfil perfil = new Perfil(Session);
                         perfil.setVisible(true);
                         dispose();
                     } else {

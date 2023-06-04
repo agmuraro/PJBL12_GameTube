@@ -1,5 +1,7 @@
 package src;
 
+import org.json.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -7,10 +9,10 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 
 public class Biblioteca extends JFrame {
+    private JSONObject session;
 
-
-    public Biblioteca() {
-
+    public Biblioteca(JSONObject session) {
+        this.session = session;
         ImageIcon posterUm = new ImageIcon("image/img_1.png");
 
         JLabel label = new JLabel();
@@ -53,14 +55,14 @@ public class Biblioteca extends JFrame {
         irPerfil.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new Perfil().setVisible(true);
+                new Perfil(session).setVisible(true);
             }
         });
         JMenuItem verLoja = new JMenuItem("Ver Loja");
         verLoja.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new Loja().setVisible(true);
+                new Loja(session).setVisible(true);
             }
         });
 
@@ -68,7 +70,7 @@ public class Biblioteca extends JFrame {
         verLista.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new ListaDesejos().setVisible(true);
+                new ListaDesejos(session).setVisible(true);
             }
         });
 

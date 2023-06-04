@@ -1,6 +1,8 @@
 package src;
 
 
+import org.json.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,70 +12,113 @@ import javax.swing.JFrame;
 
 public class Perfil extends JFrame {
 
-    public Perfil() {
+    private JSONObject session;
 
-        ImageIcon image = new ImageIcon("image/img_2.png");
+    public Perfil(JSONObject session) {
+        if (!session.has("name")) {
+            JOptionPane optionPane = new JOptionPane("Por favor realize login", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
 
-        JLabel label = new JLabel();
-        label.setText("Arthur Muraro");
-        label.setIcon(image);
-        label.setHorizontalTextPosition(JLabel.CENTER);
-        label.setVerticalTextPosition(JLabel.BOTTOM);
-        label.setForeground(Color.WHITE);
-        label.setIconTextGap(20);
-        label.setVerticalAlignment(JLabel.CENTER);
-        label.setHorizontalAlignment(JLabel.CENTER);
+            JButton customButton = new JButton("Fechar");
 
+            optionPane.setOptions(new Object[] { customButton });
 
-        JFrame frame = new JFrame("GameTube");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 700);
-        frame.getContentPane().setBackground(Color.DARK_GRAY);
-        frame.add(label);
-        frame.setVisible(true);
+            // Create a dialog with the option pane
+            JDialog dialog = optionPane.createDialog("No Session");
 
-        JMenuBar barraMenu = new JMenuBar();
-        JMenu menuBiblioteca = new JMenu("Biblioteca");
-        JMenu menuLoja = new JMenu ("Loja");
-        JMenu menuLista = new JMenu("Lista de Desejos");
+            // Add an action listener to the custom button
+            customButton.addActionListener(e -> {
+                descartar();
+                dialog.dispose();
+            });
 
-        JMenuItem verJogos = new JMenuItem("Ver Jogos");
-        verJogos.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                new Biblioteca().setVisible(true);
-            }
-        });
+            // Set the dialog to be modal
+            dialog.setModal(true);
 
-        JMenuItem verLoja = new JMenuItem("Ver Loja");
-        verLoja.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                new Loja().setVisible(true);
-            }
-        });
+            // Set the dialog to be non-resizable
+            dialog.setResizable(false);
 
-        JMenuItem verLista = new JMenuItem("Ver Lista");
-        verLista.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.dispose();
-                new ListaDesejos().setVisible(true);
-            }
-        });
+            // Display the dialog
+            dialog.setVisible(true);
+        }
+
+//        this.session = session;
+    try {
+        if (session.has("name")){
+            ImageIcon image = new ImageIcon("image/img_2.png");
+
+            JLabel nomeLabel = new JLabel();
+            nomeLabel.setText(session.getString("name"));
+            nomeLabel.setIcon(image);
+            nomeLabel.setHorizontalTextPosition(JLabel.CENTER);
+            nomeLabel.setVerticalTextPosition(JLabel.BOTTOM);
+            nomeLabel.setForeground(Color.WHITE);
+            nomeLabel.setIconTextGap(20);
+            nomeLabel.setVerticalAlignment(JLabel.CENTER);
+            nomeLabel.setHorizontalAlignment(JLabel.CENTER);
 
 
-        menuBiblioteca.add(verJogos);
-        menuLoja.add(verLoja);
-        menuLista.add(verLista);
+            JFrame frame = new JFrame("GameTube");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1000, 700);
+            frame.getContentPane().setBackground(Color.DARK_GRAY);
+            frame.add(nomeLabel);
+            frame.setVisible(true);
 
-        barraMenu.add(menuBiblioteca);
-        barraMenu.add(menuLoja);
-        barraMenu.add(menuLista);
+            JMenuBar barraMenu = new JMenuBar();
+            JMenu menuBiblioteca = new JMenu("Biblioteca");
+            JMenu menuLoja = new JMenu("Loja");
+            JMenu menuLista = new JMenu("Lista de Desejos");
 
-        frame.getContentPane().add(BorderLayout.NORTH, barraMenu);
-        frame.setVisible(true);
+            JMenuItem verJogos = new JMenuItem("Ver Jogos");
+            verJogos.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.dispose();
+                    new Biblioteca(session).setVisible(true);
+                }
+            });
+
+            JMenuItem verLoja = new JMenuItem("Ver Loja");
+            verLoja.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.dispose();
+                    new Loja(session).setVisible(true);
+                }
+            });
+
+            JMenuItem verLista = new JMenuItem("Ver Lista");
+            verLista.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    frame.dispose();
+                    new ListaDesejos(session).setVisible(true);
+                }
+            });
 
 
+            menuBiblioteca.add(verJogos);
+            menuLoja.add(verLoja);
+            menuLista.add(verLista);
+
+            barraMenu.add(menuBiblioteca);
+            barraMenu.add(menuLoja);
+            barraMenu.add(menuLista);
+
+            frame.getContentPane().add(BorderLayout.NORTH, barraMenu);
+            frame.setVisible(true);
+        } else {
+            throw new MyCustomException("Session undefined");
+        }
+
+    } catch (MyCustomException e) {
+        System.out.println(e.getMessage());
+        descartar();
     }
 
+    }
+    public void descartar() {
+        dispose();
+    }
+    public static void main(String[] args) {
+        JSONObject a = new JSONObject();
+        Perfil p = new Perfil(a);
+    }
 }

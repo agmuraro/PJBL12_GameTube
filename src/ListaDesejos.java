@@ -1,13 +1,16 @@
 package src;
 
+import org.json.JSONObject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ListaDesejos extends JFrame {
-
-    public ListaDesejos(){
+    private JSONObject session;
+    public ListaDesejos(JSONObject session){
+        this.session = session;
         JFrame frame = new JFrame("GameTube");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
@@ -23,21 +26,21 @@ public class ListaDesejos extends JFrame {
         verJogos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new Biblioteca().setVisible(true);
+                new Biblioteca(session).setVisible(true);
             }
         });
         JMenuItem irPerfil = new JMenuItem("Ir para o Perfil");
         irPerfil.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new Perfil().setVisible(true);
+                new Perfil(session).setVisible(true);
             }
         });
         JMenuItem verLoja = new JMenuItem("Ver Loja");
         verLoja.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();
-                new Loja().setVisible(true);
+                new Loja(session).setVisible(true);
             }
         });
 
