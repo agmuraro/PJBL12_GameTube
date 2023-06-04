@@ -57,12 +57,11 @@ public class Perfil extends JFrame {
             nomeLabel.setHorizontalAlignment(JLabel.CENTER);
 
 
-            JFrame frame = new JFrame("GameTube");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1000, 700);
-            frame.getContentPane().setBackground(Color.DARK_GRAY);
-            frame.add(nomeLabel);
-            frame.setVisible(true);
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setSize(1000, 700);
+            getContentPane().setBackground(Color.DARK_GRAY);
+            add(nomeLabel);
+            setVisible(true);
 
             JMenuBar barraMenu = new JMenuBar();
             JMenu menuBiblioteca = new JMenu("Biblioteca");
@@ -72,7 +71,7 @@ public class Perfil extends JFrame {
             JMenuItem verJogos = new JMenuItem("Ver Jogos");
             verJogos.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    frame.dispose();
+                    dispose();
                     new Biblioteca(session).setVisible(true);
                 }
             });
@@ -80,7 +79,7 @@ public class Perfil extends JFrame {
             JMenuItem verLoja = new JMenuItem("Ver Loja");
             verLoja.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    frame.dispose();
+                    dispose();
                     new Loja(session).setVisible(true);
                 }
             });
@@ -88,7 +87,7 @@ public class Perfil extends JFrame {
             JMenuItem verLista = new JMenuItem("Ver Lista");
             verLista.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    frame.dispose();
+                    dispose();
                     new ListaDesejos(session).setVisible(true);
                 }
             });
@@ -102,8 +101,9 @@ public class Perfil extends JFrame {
             barraMenu.add(menuLoja);
             barraMenu.add(menuLista);
 
-            frame.getContentPane().add(BorderLayout.NORTH, barraMenu);
-            frame.setVisible(true);
+            getContentPane().add(BorderLayout.NORTH, barraMenu);
+            setVisible(true);
+            setLocationRelativeTo(null);
         } else {
             throw new MyCustomException("Session undefined");
         }

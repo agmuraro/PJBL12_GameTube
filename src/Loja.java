@@ -10,11 +10,11 @@ import java.awt.event.ActionListener;
 public class Loja extends JFrame{
     private JSONObject session;
     public Loja(JSONObject session){
-        JFrame frame = new JFrame("GameTube");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 700);
-        frame.getContentPane().setBackground(Color.DARK_GRAY);
-        frame.setVisible(true);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1000, 700);
+        getContentPane().setBackground(Color.DARK_GRAY);
+        setVisible(true);
 
         JMenuBar barraMenu = new JMenuBar();
         JMenu menuBiblioteca = new JMenu("Biblioteca");
@@ -24,14 +24,14 @@ public class Loja extends JFrame{
         JMenuItem verJogos = new JMenuItem("Ver Jogos");
         verJogos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new Biblioteca(session).setVisible(true);
             }
         });
         JMenuItem irPerfil = new JMenuItem("Ir para o Perfil");
         irPerfil.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new Perfil(session).setVisible(true);
             }
         });
@@ -39,7 +39,7 @@ public class Loja extends JFrame{
         JMenuItem verLista = new JMenuItem("Ver Lista");
         verLista.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new ListaDesejos(session).setVisible(true);
             }
         });
@@ -52,9 +52,9 @@ public class Loja extends JFrame{
         barraMenu.add(menuLista);
         barraMenu.add(menuPerfil);
 
-        frame.getContentPane().add(BorderLayout.NORTH, barraMenu);
-        frame.setVisible(true);
-
+        getContentPane().add(BorderLayout.NORTH, barraMenu);
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
 }

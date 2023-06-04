@@ -11,11 +11,11 @@ public class ListaDesejos extends JFrame {
     private JSONObject session;
     public ListaDesejos(JSONObject session){
         this.session = session;
-        JFrame frame = new JFrame("GameTube");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 700);
-        frame.getContentPane().setBackground(Color.DARK_GRAY);
-        frame.setVisible(true);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1000, 700);
+        getContentPane().setBackground(Color.DARK_GRAY);
+        setVisible(true);
 
         JMenuBar barraMenu = new JMenuBar();
         JMenu menuBiblioteca = new JMenu("Biblioteca");
@@ -25,21 +25,21 @@ public class ListaDesejos extends JFrame {
         JMenuItem verJogos = new JMenuItem("Ver Jogos");
         verJogos.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new Biblioteca(session).setVisible(true);
             }
         });
         JMenuItem irPerfil = new JMenuItem("Ir para o Perfil");
         irPerfil.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new Perfil(session).setVisible(true);
             }
         });
         JMenuItem verLoja = new JMenuItem("Ver Loja");
         verLoja.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new Loja(session).setVisible(true);
             }
         });
@@ -52,8 +52,9 @@ public class ListaDesejos extends JFrame {
         barraMenu.add(menuPerfil);
         barraMenu.add(menuLoja);
 
-        frame.getContentPane().add(BorderLayout.NORTH, barraMenu);
-        frame.setVisible(true);
+        getContentPane().add(BorderLayout.NORTH, barraMenu);
+        setVisible(true);
+        setLocationRelativeTo(null);
     }
 
 }

@@ -37,13 +37,12 @@ public class Biblioteca extends JFrame {
         labelDois.setVerticalAlignment(JLabel.CENTER);
         labelDois.setHorizontalAlignment(JLabel.LEFT);
 
-        JFrame frame = new JFrame("GameTube");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 700);
-        frame.getContentPane().setBackground(Color.DARK_GRAY);
-        frame.add(label);
-        frame.setVisible(true);
-        frame.add(labelDois);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1000, 700);
+        getContentPane().setBackground(Color.DARK_GRAY);
+        add(label);
+        setVisible(true);
+        add(labelDois);
 
 
         JMenuBar barraMenu = new JMenuBar();
@@ -54,14 +53,14 @@ public class Biblioteca extends JFrame {
         JMenuItem irPerfil = new JMenuItem("Ir para o Perfil");
         irPerfil.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new Perfil(session).setVisible(true);
             }
         });
         JMenuItem verLoja = new JMenuItem("Ver Loja");
         verLoja.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new Loja(session).setVisible(true);
             }
         });
@@ -69,7 +68,7 @@ public class Biblioteca extends JFrame {
         JMenuItem verLista = new JMenuItem("Ver Lista");
         verLista.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                frame.dispose();
+                dispose();
                 new ListaDesejos(session).setVisible(true);
             }
         });
@@ -83,8 +82,9 @@ public class Biblioteca extends JFrame {
         barraMenu.add(menuLista);
         barraMenu.add(menuPerfil);
 
-        frame.getContentPane().add(BorderLayout.NORTH, barraMenu);
-        frame.setVisible(true);
+        getContentPane().add(BorderLayout.NORTH, barraMenu);
+        setVisible(true);
+        setLocationRelativeTo(null);
 
 
     }
