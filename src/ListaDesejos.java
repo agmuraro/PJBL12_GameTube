@@ -11,50 +11,88 @@ public class ListaDesejos extends JFrame {
     private JSONObject session;
     public ListaDesejos(JSONObject session){
         this.session = session;
+        if (!session.has("name")) {
+            JOptionPane optionPane = new JOptionPane("Por favor realize login", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1000, 700);
-        getContentPane().setBackground(Color.DARK_GRAY);
-        setVisible(true);
+            JButton customButton = new JButton("Fechar");
 
-        JMenuBar barraMenu = new JMenuBar();
-        JMenu menuBiblioteca = new JMenu("Biblioteca");
-        JMenu menuLoja = new JMenu("Loja");
-        JMenu menuPerfil = new JMenu("Perfil");
+            optionPane.setOptions(new Object[] { customButton });
 
-        JMenuItem verJogos = new JMenuItem("Ver Jogos");
-        verJogos.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new Biblioteca(session).setVisible(true);
+            // Create a dialog with the option pane
+            JDialog dialog = optionPane.createDialog("No Session");
+
+            // Add an action listener to the custom button
+            customButton.addActionListener(e -> {
+                descartar();
+                dialog.dispose();
+            });
+
+            // Set the dialog to be modal
+            dialog.setModal(true);
+
+            // Set the dialog to be non-resizable
+            dialog.setResizable(false);
+
+            // Display the dialog
+            dialog.setVisible(true);
+        }
+        try {
+            if (session.has("name")){
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                setSize(1000, 700);
+                getContentPane().setBackground(Color.DARK_GRAY);
+                setVisible(true);
+
+                JMenuBar barraMenu = new JMenuBar();
+                JMenu menuBiblioteca = new JMenu("Biblioteca");
+                JMenu menuLoja = new JMenu("Loja");
+                JMenu menuPerfil = new JMenu("Perfil");
+
+                JMenuItem verJogos = new JMenuItem("Ver Jogos");
+                verJogos.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new Biblioteca(session).setVisible(true);
+                    }
+                });
+                JMenuItem irPerfil = new JMenuItem("Ir para o Perfil");
+                irPerfil.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new Perfil(session).setVisible(true);
+                    }
+                });
+                JMenuItem verLoja = new JMenuItem("Ver Loja");
+                verLoja.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        dispose();
+                        new Loja(session).setVisible(true);
+                    }
+                });
+
+                menuBiblioteca.add(verJogos);
+                menuPerfil.add(irPerfil);
+                menuLoja.add(verLoja);
+
+                barraMenu.add(menuBiblioteca);
+                barraMenu.add(menuPerfil);
+                barraMenu.add(menuLoja);
+
+                getContentPane().add(BorderLayout.NORTH, barraMenu);
+                setVisible(true);
+                setLocationRelativeTo(null);
+            } else {
+                throw new MyCustomException("Session undefined");
             }
-        });
-        JMenuItem irPerfil = new JMenuItem("Ir para o Perfil");
-        irPerfil.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new Perfil(session).setVisible(true);
-            }
-        });
-        JMenuItem verLoja = new JMenuItem("Ver Loja");
-        verLoja.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new Loja(session).setVisible(true);
-            }
-        });
 
-        menuBiblioteca.add(verJogos);
-        menuPerfil.add(irPerfil);
-        menuLoja.add(verLoja);
+        } catch (MyCustomException e) {
+            System.out.println(e.getMessage());
+            descartar();
+        }
 
-        barraMenu.add(menuBiblioteca);
-        barraMenu.add(menuPerfil);
-        barraMenu.add(menuLoja);
-
-        getContentPane().add(BorderLayout.NORTH, barraMenu);
-        setVisible(true);
-        setLocationRelativeTo(null);
+    }
+    public void descartar() {
+        dispose();
     }
 
 }

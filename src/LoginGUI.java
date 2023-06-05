@@ -93,7 +93,7 @@ public class LoginGUI extends JFrame {
                 JSONObject Session = LoginAction.realizarLogin(usernameField.getText(), passwordField.getText());
                 try{
                     if (Session != null) {
-                        Perfil perfil = new Perfil(Session);
+                        profileEditGUI perfil = new profileEditGUI(Session);
                         perfil.setVisible(true);
                         dispose();
                     } else {

@@ -1,5 +1,8 @@
 package src;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class profileAction {
     public static void editarNome(Usuario user,String newName){
         user.setName(newName);
@@ -13,4 +16,7 @@ public class profileAction {
     public static void editarSenha(Usuario user,String newPasscode){
         user.setPassword(newPasscode);
     };
+    public static void setProfilePic(Usuario user, String pic){
+        user.setProfilePic(pic);
+    }
 }

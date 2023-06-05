@@ -8,12 +8,14 @@ public class Usuario {
     private String email;
     private String password;
     private ArrayList<Game> biblioteca;
+    private String profilePic;
 
     public Usuario(String email, String password, String name, String username){
         this.name = name;
         this.email = email;
         this.password = password;
         this.username = username;
+        this.profilePic = profilePic;
     }
 
     public String getUsername() {
@@ -34,6 +36,14 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 
     public String getName() {
