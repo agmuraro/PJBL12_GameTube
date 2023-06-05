@@ -7,21 +7,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
-import src.Usuario;
-
-public class RegistroAction {
-    public static void registrarUsuario(Usuario user) {
-        JSONArray biblioteca = new JSONArray();
+public class gameAction {
+    public static void addGame(Game game){
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("name", user.getName());
-        jsonObject.put("email", user.getEmail());
-        jsonObject.put("senha", user.getPassword());
-        jsonObject.put("username", user.getUsername());
-        jsonObject.put("biblioteca", biblioteca);
+        jsonObject.put("name", game.getName());
+        jsonObject.put("email", game.getDescricao());
+        jsonObject.put("senha", game.getPrice());
 
-        String filePath = "src/usuarios.json";
+        String filePath = "src/games.json";
 
         try {
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
@@ -41,4 +35,5 @@ public class RegistroAction {
         }
 
     }
+    public static void deleteGame(){};
 }
