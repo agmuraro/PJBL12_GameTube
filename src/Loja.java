@@ -1,7 +1,8 @@
 package src;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,15 +12,19 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class Loja extends JFrame{
+public class Loja extends JFrame {
     private JSONObject session;
-    public Loja(JSONObject session){
+    private JPanel gamePanelContainer;
+
+    public Loja(JSONObject session) {
+        this.session = session;
+
         if (!session.has("name")) {
             JOptionPane optionPane = new JOptionPane("Por favor realize login", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
 
             JButton customButton = new JButton("Fechar");
 
-            optionPane.setOptions(new Object[] { customButton });
+            optionPane.setOptions(new Object[]{customButton});
 
             // Create a dialog with the option pane
             JDialog dialog = optionPane.createDialog("No Session");
@@ -39,13 +44,17 @@ public class Loja extends JFrame{
             // Display the dialog
             dialog.setVisible(true);
         }
+
         try {
-            if (session.has("name")){
+            if (session.has("name")) {
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 setSize(1000, 700);
                 getContentPane().setBackground(Color.DARK_GRAY);
-                setVisible(true);
 
+                // Create a top-level JPanel to hold the menu bar and game panels
+                JPanel contentPanel = new JPanel(new BorderLayout());
+
+                // Create the menu bar
                 JMenuBar barraMenu = new JMenuBar();
                 JMenu menuBiblioteca = new JMenu("Biblioteca");
                 JMenu menuLista = new JMenu("Lista de Desejos");
@@ -82,7 +91,24 @@ public class Loja extends JFrame{
                 barraMenu.add(menuLista);
                 barraMenu.add(menuPerfil);
 
-                getContentPane().add(BorderLayout.NORTH, barraMenu);
+                contentPanel.add(BorderLayout.NORTH, barraMenu);
+
+                // Create a container panel for the game panels
+                gamePanelContainer = new JPanel(new GridLayout(0, 3, 10, 10));
+                gamePanelContainer.setBackground(Color.DARK_GRAY); // Set background color to dark gray
+
+                // Add the game panel container to a JScrollPane for scrolling
+                JScrollPane scrollPane = new JScrollPane(gamePanelContainer);
+                scrollPane.setBackground(Color.DARK_GRAY);
+                scrollPane.getViewport().setBackground(Color.DARK_GRAY);
+                scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+                // Add the scroll pane to the content panel
+                contentPanel.add(BorderLayout.CENTER, scrollPane);
+
+                getContentPane().setLayout(new BorderLayout());
+                getContentPane().add(contentPanel, BorderLayout.CENTER);
                 setVisible(true);
                 setLocationRelativeTo(null);
             } else {
@@ -95,6 +121,7 @@ public class Loja extends JFrame{
         }
         readGameListingsFromFile("src/games.json");
     }
+
     private void readGameListingsFromFile(String filePath) {
         try {
             String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
@@ -105,45 +132,55 @@ public class Loja extends JFrame{
                 String imagePath = listingObject.getString("directory");
                 String name = listingObject.getString("name");
 
+
                 // Load the image from the file
                 ImageIcon imageIcon = new ImageIcon(imagePath);
                 Image image = imageIcon.getImage();
                 Image scaledImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
                 ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
 
-                // Create a panel to hold the image, name, and button
+                // Create a panel to hold the image, name, and button for each game
                 JPanel gamePanel = new JPanel();
                 gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
-                gamePanel.setBackground(Color.WHITE); // Set background color to white
+                gamePanel.setBackground(Color.DARK_GRAY); // Set background color to dark gray
 
                 // Create a JLabel to display the image
                 JLabel imageLabel = new JLabel();
                 imageLabel.setIcon(scaledImageIcon);
                 gamePanel.add(imageLabel);
 
+                // Create a panel to hold the name and button
+                JPanel nameButtonPanel = new JPanel();
+                nameButtonPanel.setLayout(new BoxLayout(nameButtonPanel, BoxLayout.Y_AXIS));
+                nameButtonPanel.setBackground(Color.DARK_GRAY); // Set background color to dark gray
+
                 // Create a JLabel to display the name
                 JLabel nameLabel = new JLabel(name);
                 nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                gamePanel.add(nameLabel);
+                nameLabel.setForeground(Color.WHITE); // Set text color to white
+                nameButtonPanel.add(nameLabel);
 
                 // Create a button
                 JButton pagarButton = new JButton("Pagar");
                 pagarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-                gamePanel.add(pagarButton);
+                nameButtonPanel.add(pagarButton);
 
-                // Add the game panel to the content pane
-                getContentPane().add(gamePanel);
+                gamePanel.add(nameButtonPanel);
+
+                // Add the game panel to the game panel container
+                gamePanelContainer.add(gamePanel);
             }
 
             // Update the content pane layout after adding all game panels
-            getContentPane().setLayout(new GridLayout(0, 3, 10, 10));
+            getContentPane().revalidate();
+            getContentPane().repaint();
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
     }
+
     public void descartar() {
         dispose();
     }
-
 }
