@@ -1,5 +1,6 @@
 package src;
 
+import src.lojaAction;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -161,7 +164,7 @@ public class Loja extends JFrame {
                 nameButtonPanel.add(nameLabel);
 
                 // Create a button
-                JButton pagarButton = new JButton("Pagar");
+                JButton pagarButton = new JButton("Comprar");
                 pagarButton.setAlignmentX(Component.CENTER_ALIGNMENT);
                 nameButtonPanel.add(pagarButton);
 
@@ -169,6 +172,40 @@ public class Loja extends JFrame {
 
                 // Add the game panel to the game panel container
                 gamePanelContainer.add(gamePanel);
+
+                pagarButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                            try {
+                                String fileContent = new String(Files.readAllBytes(Paths.get("src/games.json")));
+                                JSONArray jsonArray;
+                                jsonArray = new JSONArray(fileContent);
+                                for (Object item : jsonArray) {
+                                    if (item instanceof JSONObject) {
+                                        JSONObject jsonObject = (JSONObject) item;
+
+                                        if (name.equals(jsonObject.getString("name"))) {
+                                            System.out.println(jsonObject);
+                                            Game gameComprar = new Game(jsonObject.getString("name"), jsonObject.getString("description"), jsonObject.getDouble("aprice"), jsonObject.getString("directory"));
+                                            if (profileAction.checkGame(session, name)) {
+                                                showErrorPopup("Jogo Já Comprado", "Fechar");
+                                                return;
+                                            }
+                                            boolean compraResult = lojaAction.comprarGame(session, gameComprar);
+                                            if (compraResult) {
+                                                System.out.println("Compra Realizada com Sucesso");
+                                            } else {
+                                                System.out.println("Erro na chamda de Função da Compra");
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch (IOException p) {
+                                p.printStackTrace();
+
+                            }
+                    }
+                });
             }
 
             // Update the content pane layout after adding all game panels
@@ -182,5 +219,10 @@ public class Loja extends JFrame {
 
     public void descartar() {
         dispose();
+    }
+    private void showErrorPopup(String message, String buttonText) {
+        JOptionPane optionPane = new JOptionPane(message, JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{buttonText});
+        JDialog dialog = optionPane.createDialog(this, "Erro");
+        dialog.setVisible(true);
     }
 }

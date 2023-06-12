@@ -4,11 +4,13 @@ public class Game {
     private String name;
     private String descricao;
     private Double price;
+    private String directory;
             
-    public Game(String name, String descricao, Double preco) {
+    public Game(String name, String descricao, Double preco, String directory) {
         this.name = name;
         this.descricao = descricao;
         this.price = preco;
+        this.directory = directory;
     }
     
     public String getName() { return name; }

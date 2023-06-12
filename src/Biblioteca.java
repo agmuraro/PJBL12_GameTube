@@ -1,15 +1,21 @@
 package src;
 
 import org.json.JSONObject;
-
+import org.json.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.swing.JFrame;
 
 public class Biblioteca extends JFrame {
     private JSONObject session;
+    private JPanel gamePanelContainer;
 
     public Biblioteca(JSONObject session) {
         this.session = session;
@@ -40,36 +46,11 @@ public class Biblioteca extends JFrame {
         }
         try {
             if (session.has("name")){
-                ImageIcon posterUm = new ImageIcon("image/img_1.png");
-
-                JLabel label = new JLabel();
-                label.setText("Sonic Mania");
-                label.setIcon(posterUm);
-                label.setHorizontalTextPosition(JLabel.CENTER);
-                label.setVerticalTextPosition(JLabel.BOTTOM);
-                label.setForeground(Color.WHITE);
-                label.setIconTextGap(20);
-                label.setVerticalAlignment(JLabel.CENTER);
-                label.setHorizontalAlignment(JLabel.CENTER);
-
-                ImageIcon posterDois = new ImageIcon("image/img_3.png");
-
-                JLabel labelDois = new JLabel();
-                labelDois.setText("Portal 2");
-                labelDois.setIcon(posterDois);
-                labelDois.setHorizontalTextPosition(JLabel.CENTER);
-                labelDois.setVerticalTextPosition(JLabel.BOTTOM);
-                labelDois.setForeground(Color.WHITE);
-                labelDois.setIconTextGap(20);
-                labelDois.setVerticalAlignment(JLabel.CENTER);
-                labelDois.setHorizontalAlignment(JLabel.LEFT);
 
                 setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 setSize(1000, 700);
                 getContentPane().setBackground(Color.DARK_GRAY);
-                add(label);
                 setVisible(true);
-                add(labelDois);
 
 
                 JMenuBar barraMenu = new JMenuBar();
@@ -121,11 +102,84 @@ public class Biblioteca extends JFrame {
             System.out.println(e.getMessage());
             descartar();
         }
-
+        readGameListingsFromFile("src/games.json");
     }
+
+    private void readGameListingsFromFile(String filePath) {
+        try {
+            String fileContent = new String(Files.readAllBytes(Paths.get(filePath)));
+            JSONArray gameListingsArray = new JSONArray(fileContent);
+
+            // Initialize the game panel container with a grid layout
+            gamePanelContainer = new JPanel(new GridLayout(0, 3, 10, 10)); // 3 columns, 10px horizontal and vertical gaps
+            gamePanelContainer.setBackground(Color.DARK_GRAY); // Set background color to dark gray
+
+            // Add an empty filler panel for padding on the left side
+            JPanel fillerPanel = new JPanel();
+            fillerPanel.setOpaque(false);
+            gamePanelContainer.add(fillerPanel);
+
+            for (int i = 0; i < gameListingsArray.length(); i++) {
+                JSONObject listingObject = gameListingsArray.getJSONObject(i);
+                String imagePath = listingObject.getString("directory");
+                String name = listingObject.getString("name");
+
+                // Load the image from the file
+                ImageIcon imageIcon = new ImageIcon(imagePath);
+                Image image = imageIcon.getImage();
+                Image scaledImage = image.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+                ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+
+                // Create a panel to hold the image and name for each game
+                JPanel gamePanel = new JPanel();
+                gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.Y_AXIS));
+                gamePanel.setBackground(Color.DARK_GRAY); // Set background color to dark gray
+
+                // Create a JLabel to display the image
+                JLabel imageLabel = new JLabel();
+                imageLabel.setIcon(scaledImageIcon);
+                gamePanel.add(imageLabel);
+
+                // Create a panel to hold the name
+                JPanel namePanel = new JPanel();
+                namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.Y_AXIS));
+                namePanel.setBackground(Color.DARK_GRAY); // Set background color to dark gray
+
+                // Create a JLabel to display the name
+                JLabel nameLabel = new JLabel(name);
+                nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                nameLabel.setForeground(Color.WHITE); // Set text color to white
+                namePanel.add(nameLabel);
+
+                gamePanel.add(namePanel);
+
+                // Add the game panel to the game panel container
+                gamePanelContainer.add(gamePanel);
+
+                // Add a MouseListener to the image label
+                imageLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        // Handle the image click event here
+                    }
+                });
+            }
+
+            // Add the game panel container to the content pane
+            getContentPane().add(gamePanelContainer, BorderLayout.CENTER);
+
+            // Update the content pane layout after adding all game panels
+            getContentPane().revalidate();
+            getContentPane().repaint();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
     public void descartar() {
         dispose();
     }
 }
-

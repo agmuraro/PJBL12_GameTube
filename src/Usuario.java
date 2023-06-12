@@ -1,5 +1,7 @@
 package src;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 
 public class Usuario {
@@ -7,7 +9,7 @@ public class Usuario {
     private String username;
     private String email;
     private String password;
-    private ArrayList<Game> biblioteca;
+    private JSONArray biblioteca;
     private String profilePic;
 
     public Usuario(String email, String password, String name, String username){
@@ -58,7 +60,7 @@ public class Usuario {
         return password;
     }
 
-    public ArrayList<Game> getBiblioteca() {
+    public JSONArray getBiblioteca() {
         return biblioteca;
     }
 }

@@ -1,5 +1,6 @@
 package src;
 
+import src.profileAction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -8,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class lojaAction {
-    public static void comprarGame(JSONObject session, Game game){
+    public static boolean comprarGame(JSONObject session, Game game){
         try {
             String fileContent = new String(Files.readAllBytes(Paths.get("src/usuarios.json")));
             JSONArray jsonArray;
@@ -17,22 +18,29 @@ public class lojaAction {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
                 if (session.getString("name").equals(jsonObject.getString("name"))) {
-
                     JSONArray currentBiblioteca = jsonObject.getJSONArray("biblioteca");
-                    JSONObject addingGame = new JSONObject();
-                    addingGame.put("nome", game.getName());
-                    addingGame.put("descricao", game.getDescricao());
-                    currentBiblioteca.put(addingGame);
+                    if (currentBiblioteca.length() > 0){
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            String element = jsonArray.getString(j);
+                            if (element.equals(game.getName())) {
+                                return false;
+                            }
+                        }
+                    }
+
+
+                    currentBiblioteca.put(game.getName());
                     jsonObject.put("biblioteca", currentBiblioteca);
 
                     Files.write(Paths.get("src/usuarios.json"), jsonArray.toString().getBytes());
 
-                    return;
+                    return true;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
 
         }
-    };
+        return false;
+    }
 }
