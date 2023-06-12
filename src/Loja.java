@@ -78,20 +78,14 @@ public class Loja extends JFrame {
                     }
                 });
 
-                JMenuItem verLista = new JMenuItem("Ver Lista");
-                verLista.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        dispose();
-                        new ListaDesejos(session).setVisible(true);
-                    }
-                });
+
+
 
                 menuBiblioteca.add(verJogos);
                 menuPerfil.add(irPerfil);
-                menuLista.add(verLista);
+
 
                 barraMenu.add(menuBiblioteca);
-                barraMenu.add(menuLista);
                 barraMenu.add(menuPerfil);
 
                 contentPanel.add(BorderLayout.NORTH, barraMenu);

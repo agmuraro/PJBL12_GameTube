@@ -71,20 +71,14 @@ public class Biblioteca extends JFrame {
                     }
                 });
 
-                JMenuItem verLista = new JMenuItem("Ver Lista");
-                verLista.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        dispose();
-                        new ListaDesejos(session).setVisible(true);
-                    }
-                });
+
 
                 menuPerfil.add(irPerfil);
                 menuLoja.add(verLoja);
-                menuLista.add(verLista);
+
 
                 barraMenu.add(menuLoja);
-                barraMenu.add(menuLista);
+
                 barraMenu.add(menuPerfil);
 
                 setJMenuBar(barraMenu);

@@ -47,18 +47,13 @@ public class TelaJogo extends JFrame {
             }
         });
 
-        JMenuItem verLista = new JMenuItem("Ver Lista");
-        verLista.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                new ListaDesejos(session).setVisible(true);
-            }
-        });
+
+
 
         menuPerfil.add(irPerfil);
         menuBiblioteca.add(verJogos);
         menuLoja.add(verLoja);
-        menuLista.add(verLista);
+
 
         barraMenu.add(menuBiblioteca);
         barraMenu.add(menuLoja);

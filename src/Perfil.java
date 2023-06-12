@@ -138,21 +138,14 @@ public class Perfil extends JFrame {
                     }
                 });
 
-                JMenuItem verLista = new JMenuItem("Ver Lista");
-                verLista.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        dispose();
-                        new ListaDesejos(session).setVisible(true);
-                    }
-                });
 
                 menuBiblioteca.add(verJogos);
                 menuLoja.add(verLoja);
-                menuLista.add(verLista);
+
 
                 barraMenu.add(menuBiblioteca);
                 barraMenu.add(menuLoja);
-                barraMenu.add(menuLista);
+
 
                 setJMenuBar(barraMenu);
                 setVisible(true);
