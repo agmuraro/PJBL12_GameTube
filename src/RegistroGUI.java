@@ -1,6 +1,6 @@
 package src;
 
-import src.RegistroAction;
+
 import javax.swing.JTextField;
 import java.io.IOException;
 import java.io.FileWriter;
@@ -122,7 +122,7 @@ public class RegistroGUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Usuario temp = new Usuario(emailField.getText(), passwordField.getText(), nameField.getText(), nicknameField.getText());
-                RegistroAction.registrarUsuario(temp);
+                temp.registrarUsuario(temp);
                 LoginGUI loginGUI = new LoginGUI();
                 loginGUI.setVisible(true);
                 dispose(); // Fecha a janela atual (RegistroGUI)
