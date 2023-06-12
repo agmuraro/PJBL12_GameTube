@@ -93,9 +93,15 @@ public class LoginGUI extends JFrame {
                 JSONObject Session = LoginAction.realizarLogin(usernameField.getText(), passwordField.getText());
                 try{
                     if (Session != null) {
-                        profileEditGUI perfil = new profileEditGUI(Session);
-                        perfil.setVisible(true);
-                        dispose();
+                        if (Session.has("admin")){
+                            PerfilAdm perfilAdm = new PerfilAdm(Session);
+                            perfilAdm.setVisible(true);
+                            dispose();
+                        } else {
+                            Perfil perfil = new Perfil(Session);
+                            perfil.setVisible(true);
+                            dispose();
+                        }
                     } else {
                         throw new MyCustomException("Login Invalido");
                 }

@@ -1,179 +1,242 @@
 package src;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
-
+import src.Perfil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class profileEditGUI extends JFrame {
 
-        private JSONObject session;
-        private JTextField nameField;
-        private JTextField emailField;
-        private JTextField senhaField;
-        private JTextField usernameField;
-        private JTextField profilePicField;
-        private JLabel profilePicLabel;
-        private JButton selectFileButton;
+    private JSONObject session;
+    private JTextField nameField;
+    private JTextField emailField;
+    private JTextField senhaField;
+    private JTextField usernameField;
+    private JTextField profilePicField;
+    private JLabel profilePicLabel;
+    private JButton selectFileButton;
+    
 
-        public profileEditGUI(JSONObject session) {
-            if (!session.has("name")) {
-                // Handle session not available
-                // ...
-            }
+    public profileEditGUI(JSONObject session) {
+        if (!session.has("name")) {
+            JOptionPane.showMessageDialog(null, "Por favor realize login", "No Session", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+            return;
+        }
 
-            this.session = session;
+        this.session = session;
 
-            try {
-                if (session.has("name")) {
-                    // Create and configure components
-                    nameField = new JTextField(20);
-                    emailField = new JTextField(20);
-                    senhaField = new JTextField(20);
-                    usernameField = new JTextField(20);
-                    profilePicLabel = new JLabel("Foto de Perfil:");
-                    selectFileButton = new JButton("Select File");
-                    selectFileButton.setBackground(Color.DARK_GRAY);
-                    selectFileButton.setForeground(Color.WHITE);
-                    selectFileButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            JFileChooser fileChooser = new JFileChooser();
-                            int result = fileChooser.showOpenDialog(null);
-                            if (result == JFileChooser.APPROVE_OPTION) {
-                                File selectedFile = fileChooser.getSelectedFile();
-                                // Perform logic to handle the selected file
-                            }
+        try {
+            if (session.has("name")) {
+                // Create and configure components
+                nameField = new JTextField(20);
+                emailField = new JTextField(20);
+                senhaField = new JTextField(20);
+                usernameField = new JTextField(20);
+                profilePicLabel = new JLabel("Foto de Perfil:");
+                selectFileButton = new JButton("Select File");
+                selectFileButton.setBackground(Color.DARK_GRAY);
+                selectFileButton.setForeground(Color.BLACK);
+                selectFileButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        JFileChooser fileChooser = new JFileChooser();
+                        int result = fileChooser.showOpenDialog(null);
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            File selectedFile = fileChooser.getSelectedFile();
+                            // Perform logic to handle the selected file
                         }
-                    });
+                    }
+                });
 
-                    JLabel nameLabel = new JLabel("Nome:");
-                    JLabel emailLabel = new JLabel("Email:");
-                    JLabel senhaLabel = new JLabel("Senha:");
-                    JLabel usernameLabel = new JLabel("Username:");
+                JLabel nameLabel = new JLabel("Nome:");
+                JLabel emailLabel = new JLabel("Email:");
+                JLabel senhaLabel = new JLabel("Senha:");
+                JLabel usernameLabel = new JLabel("Username:");
 
-                    JButton saveButton = new JButton("Save");
-                    saveButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            saveProfile();
-                        }
-                    });
-                    saveButton.setBackground(Color.DARK_GRAY);
-                    saveButton.setForeground(Color.WHITE);
+                JButton saveButton = new JButton("Save");
+                saveButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        saveProfile();
+                    }
+                });
+                saveButton.setBackground(Color.DARK_GRAY);
+                saveButton.setForeground(Color.BLACK);
 
-                    JButton goBackButton = new JButton("Go Back");
-                    goBackButton.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
+                JButton goBackButton = new JButton("Go Back");
+                goBackButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        if (session.has("admin")){
+                            new PerfilAdm(session).setVisible(true);
+                            dispose();
+                        } else {
                             new Perfil(session).setVisible(true);
                             dispose();
                             // Add code to navigate back to the previous window
                         }
-                    });
-                    goBackButton.setBackground(Color.DARK_GRAY);
-                    goBackButton.setForeground(Color.WHITE);
+                    }
+                });
+                goBackButton.setBackground(Color.DARK_GRAY);
+                goBackButton.setForeground(Color.BLACK);
 
-                    // Configure layout
-                    setLayout(new GridBagLayout());
-                    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                    setSize(400, 350);
-                    getContentPane().setBackground(Color.DARK_GRAY);
+                // Configure layout
+                setLayout(new GridBagLayout());
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                setSize(400, 350);
+                getContentPane().setBackground(Color.DARK_GRAY);
 
-                    // Create GridBagConstraints to manage the component placement
-                    GridBagConstraints gbc = new GridBagConstraints();
-                    gbc.insets = new Insets(10, 10, 10, 10); // Add padding around the components
+                // Create GridBagConstraints to manage the component placement
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.insets = new Insets(10, 10, 10, 10); // Add padding around the components
 
-                    // Add components to the frame
-                    gbc.gridx = 0;
-                    gbc.gridy = 0;
-                    add(nameLabel, gbc);
+                // Add components to the frame
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                add(nameLabel, gbc);
 
-                    gbc.gridx = 1;
-                    add(nameField, gbc);
+                gbc.gridx = 1;
+                add(nameField, gbc);
 
-                    gbc.gridx = 0;
-                    gbc.gridy = 1;
-                    add(emailLabel, gbc);
+                gbc.gridx = 0;
+                gbc.gridy = 1;
+                add(emailLabel, gbc);
 
-                    gbc.gridx = 1;
-                    add(emailField, gbc);
+                gbc.gridx = 1;
+                add(emailField, gbc);
 
-                    gbc.gridx = 0;
-                    gbc.gridy = 2;
-                    add(senhaLabel, gbc);
+                gbc.gridx = 0;
+                gbc.gridy = 2;
+                add(senhaLabel, gbc);
 
-                    gbc.gridx = 1;
-                    add(senhaField, gbc);
+                gbc.gridx = 1;
+                add(senhaField, gbc);
 
-                    gbc.gridx = 0;
-                    gbc.gridy = 3;
-                    add(usernameLabel, gbc);
+                gbc.gridx = 0;
+                gbc.gridy = 3;
+                add(usernameLabel, gbc);
 
-                    gbc.gridx = 1;
-                    add(usernameField, gbc);
+                gbc.gridx = 1;
+                add(usernameField, gbc);
 
-                    gbc.gridx = 0;
-                    gbc.gridy = 4;
-                    add(profilePicLabel, gbc);
+                gbc.gridx = 0;
+                gbc.gridy = 4;
+                add(profilePicLabel, gbc);
 
-                    gbc.gridx = 1;
-                    add(selectFileButton, gbc);
+                gbc.gridx = 1;
+                add(selectFileButton, gbc);
 
-                    gbc.gridx = 0;
-                    gbc.gridy = 5;
-                    gbc.gridwidth = 2;
-                    gbc.anchor = GridBagConstraints.CENTER;
-                    gbc.insets = new Insets(20, 0, 0, 0); // Add vertical spacing between components
-                    add(saveButton, gbc);
+                gbc.gridx = 0;
+                gbc.gridy = 5;
+                gbc.gridwidth = 2;
+                gbc.anchor = GridBagConstraints.CENTER;
+                gbc.insets = new Insets(20, 0, 0, 0); // Add vertical spacing between components
+                add(saveButton, gbc);
 
-                    gbc.gridy = 6;
-                    gbc.insets = new Insets(10, 0, 0, 0); // Add vertical spacing between components
-                    add(goBackButton, gbc);
+                gbc.gridy = 6;
+                gbc.insets = new Insets(10, 0, 0, 0); // Add vertical spacing between components
+                add(goBackButton, gbc);
 
-                    // Set foreground color to white for all labels and text fields
-                    Color whiteColor = Color.WHITE;
-                    nameLabel.setForeground(whiteColor);
-                    emailLabel.setForeground(whiteColor);
-                    senhaLabel.setForeground(whiteColor);
-                    usernameLabel.setForeground(whiteColor);
-                    profilePicLabel.setForeground(whiteColor);
-                    nameField.setForeground(whiteColor);
-                    emailField.setForeground(whiteColor);
-                    senhaField.setForeground(whiteColor);
-                    usernameField.setForeground(whiteColor);
+                // Set foreground color to black for all labels and text fields
+                Color blackColor = Color.BLACK;
+                nameLabel.setForeground(blackColor);
+                emailLabel.setForeground(blackColor);
+                senhaLabel.setForeground(blackColor);
+                usernameLabel.setForeground(blackColor);
+                profilePicLabel.setForeground(blackColor);
+                nameField.setForeground(blackColor);
+                emailField.setForeground(blackColor);
+                senhaField.setForeground(blackColor);
+                usernameField.setForeground(blackColor);
 
-                    setVisible(true);
-                    setLocationRelativeTo(null);
-                } else {
-                    throw new MyCustomException("Session undefined");
-                }
+                setLocationRelativeTo(null);
+                setVisible(true);
 
-            } catch (MyCustomException e) {
-                System.out.println(e.getMessage());
-                dispose();
+                nameField.setText(session.getString("name"));
+                senhaField.setText(session.getString("senha"));
+                usernameField.setText(session.getString("username"));
+                emailField.setText(session.getString("email"));
+
+            } else {
+                throw new MyCustomException("Session undefined");
             }
-        }
 
-        public void saveProfile() {
-            String name = nameField.getText();
-            String email = emailField.getText();
-            String senha = senhaField.getText();
-            String username = usernameField.getText();
-            String profilePic = profilePicField.getText();
-            
-            // Perform saving logic or update the User object
-            // ...
-        }
-
-        public void descartar() {
+        } catch (MyCustomException e) {
+            System.out.println(e.getMessage());
             dispose();
-        }
-
-        public static void main(String[] args) {
-            JSONObject a = new JSONObject();
-            Perfil p = new Perfil(a);
         }
     }
 
+    public void saveProfile() {
+        String profilePic = "";
+        String name = nameField.getText();
+        String email = emailField.getText();
+        String senha = senhaField.getText();
+        String username = usernameField.getText();
+        if (profilePicField != null){
+            profilePic = profilePicField.getText();
+        }
+
+        Usuario temp = new Usuario(email, senha, name, username);
+
+        try {
+            String fileContent = new String(Files.readAllBytes(Paths.get("src/usuarios.json")));
+            JSONArray jsonArray = new JSONArray(fileContent);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                if (temp.getName().equals(jsonObject.getString("name"))) {
+                    if (!name.equals(session.getString("name"))) {
+                        profileAction.editarNome(temp, name);
+                        jsonObject.put("name", temp.getName());
+                    }
+                    if (!senha.equals(session.getString("senha"))) {
+                        profileAction.editarSenha(temp, senha);
+                        jsonObject.put("senha", temp.getPassword());
+                    }
+                    if (!email.equals(session.getString("email"))) {
+                        profileAction.editarEmail(temp, email);
+                        jsonObject.put("email", temp.getEmail());
+                    }
+                    if (!username.equals(session.getString("username"))) {
+                        profileAction.editarUsername(temp, username);
+                        jsonObject.put("username", temp.getUsername());
+                    }
+                    if (profilePic != "" && !profilePic.equals(session.getString("profilePic"))) {
+                        profileAction.setProfilePic(temp, profilePic);
+                        jsonObject.put("profilePic", temp.getProfilePic());
+                    }
+
+
+
+
+
+
+                    Files.write(Paths.get("src/usuarios.json"), jsonArray.toString().getBytes());
+                    System.out.println("Dados Atualizados");
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    public void descartar() {
+        dispose();
+    }
+
+    public static void main(String[] args) {
+        JSONObject session = new JSONObject();
+        new profileEditGUI(session);
+    }
+}
