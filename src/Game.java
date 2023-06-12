@@ -21,6 +21,10 @@ public class Game {
 
     public void setDescricao(String descricao) { this.descricao = descricao; }
 
+    public String getDirectory() {
+        return directory;
+    }
+
     public Double getPrice() { return price; }
 
     public void setPrice(Double price) { this.price = price; }

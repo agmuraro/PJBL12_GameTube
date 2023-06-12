@@ -80,6 +80,13 @@ public class AdmViewJogos extends JFrame {
                         dispose();
                     }
                 });
+                JMenuItem registrarJogoMenuItem = new JMenuItem("Registrar Jogo");
+                registrarJogoMenuItem.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        new RegistroJogoGUI(session).setVisible(true);
+                    }
+                });
+                perfilMenu.add(registrarJogoMenuItem);
                 usuariosMenu.add(verUsuariosMenuItem);
 
                 // Add "Perfil" menu to the menu bar
@@ -151,7 +158,7 @@ public class AdmViewJogos extends JFrame {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String name = jsonObject.getString("name");
                 String description = jsonObject.getString("description");
-                double price = jsonObject.getDouble("aprice");
+                double price = jsonObject.getDouble("price");
                 tableModel.addRow(new Object[]{name, description, price, "Deletar"});
             }
 

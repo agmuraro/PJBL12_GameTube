@@ -1,17 +1,28 @@
 package src;
 
+import org.json.JSONObject;
+import src.PerfilAdm;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
-public class RegistroJogoGUI extends  JFrame {
+public class RegistroJogoGUI extends JFrame {
     private JTextField nameField;
     private JTextField descricaoField;
     private JTextField priceField;
     private JTextField imageField;
+    private String selectedFilePath;
 
-    public RegistroJogoGUI() {
+    public RegistroJogoGUI(JSONObject session) {
         setTitle("Registrar Jogo");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -60,8 +71,21 @@ public class RegistroJogoGUI extends  JFrame {
         rightPanel.add(priceField, gbc);
 
         gbc.gridy = 3;
-        imageField = new JTextField(20);
-        rightPanel.add(imageField, gbc);
+        JPanel imagePanel = new JPanel(new BorderLayout());
+        imageField = new JTextField(15);
+        JButton selectFileButton = new JButton("Select File");
+        selectFileButton.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            int result = fileChooser.showOpenDialog(null);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                File selectedFile = fileChooser.getSelectedFile();
+                selectedFilePath = selectedFile.getAbsolutePath();
+                imageField.setText(selectedFilePath);
+            }
+        });
+        imagePanel.add(imageField, BorderLayout.CENTER);
+        imagePanel.add(selectFileButton, BorderLayout.EAST);
+        rightPanel.add(imagePanel, gbc);
 
         gbc.gridy = 4;
         gbc.gridx = 0;
@@ -71,13 +95,36 @@ public class RegistroJogoGUI extends  JFrame {
         rightPanel.add(registroButton, gbc);
 
         gbc.gridy = 5;
+        JButton goBackButton = new JButton("Go Back");
+        rightPanel.add(goBackButton, gbc);
 
-
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PerfilAdm perfilAdmGUI = new PerfilAdm(session);
+                RegistroJogoGUI.this.dispose();
+            }
+        });
 
         registroButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                // Sla oq faz aki
+                String name = nameField.getText();
+                String description = descricaoField.getText();
+                Double price = Double.parseDouble(priceField.getText());
+
+                if (selectedFilePath != null) {
+                    File selectedFile = new File(selectedFilePath);
+                    String destinationPath = "image/" + selectedFile.getName();
+
+                    try {
+                        Files.copy(selectedFile.toPath(), Path.of(destinationPath), StandardCopyOption.REPLACE_EXISTING);
+                        Game temp = new Game(name, description, price, destinationPath);
+                        RegistroGAMEAction.registrarJogo(temp);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -90,8 +137,5 @@ public class RegistroJogoGUI extends  JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new RegistroGUI());
-    }
-}
 
+}

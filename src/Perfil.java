@@ -10,8 +10,9 @@ import java.awt.event.ActionListener;
 public class Perfil extends JFrame {
 
     private JSONObject session;
-
+    private ImageIcon imageIcon;
     public Perfil(JSONObject session) {
+
         if (!session.has("name")) {
             JOptionPane optionPane = new JOptionPane("Por favor realize login", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION);
 
@@ -57,7 +58,34 @@ public class Perfil extends JFrame {
                 gbc.anchor = GridBagConstraints.CENTER;
 
                 // Create a button with the image
-                ImageIcon imageIcon = new ImageIcon("image/img_2.png");
+                if (session.getString("imagePath").length() > 0) {
+                    ImageIcon originalIcon = new ImageIcon(session.getString("imagePath"));
+                    Image originalImage = originalIcon.getImage();
+
+                    // Set the maximum width and height for the image
+                    int maxWidth = 200;
+                    int maxHeight = 200;
+
+                    // Calculate the scaled width and height while maintaining the aspect ratio
+                    int scaledWidth = originalImage.getWidth(null);
+                    int scaledHeight = originalImage.getHeight(null);
+                    if (scaledWidth > maxWidth || scaledHeight > maxHeight) {
+                        double widthScaleFactor = (double) maxWidth / scaledWidth;
+                        double heightScaleFactor = (double) maxHeight / scaledHeight;
+                        double scaleFactor = Math.min(widthScaleFactor, heightScaleFactor);
+                        scaledWidth = (int) (scaledWidth * scaleFactor);
+                        scaledHeight = (int) (scaledHeight * scaleFactor);
+                    }
+
+                    // Resize the image
+                    Image scaledImage = originalImage.getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+
+                    // Create the scaled ImageIcon
+                    imageIcon = new ImageIcon(scaledImage);
+                } else {
+                    imageIcon = new ImageIcon("image/img_2.png");
+                }
+
                 JButton imageButton = new JButton(imageIcon);
                 imageButton.setBorderPainted(false);
                 imageButton.setContentAreaFilled(false);

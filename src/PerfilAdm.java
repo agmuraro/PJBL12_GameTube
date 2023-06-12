@@ -92,13 +92,21 @@ import java.awt.event.ActionListener;
                     JMenuBar menuBar = new JMenuBar();
                     JMenu menuJogos = new JMenu("Jogos");
                     JMenu menuUsuarios = new JMenu("Usuários");
-
+                    JMenuItem cadastrarJogo= new JMenuItem("Cadastrar Jogo");
                     JMenuItem verJogos = new JMenuItem("Ver Jogos");
                     verJogos.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             new AdmViewJogos(session).setVisible(true);
                             dispose();
                             // Add your logic for "Ver Jogos" here
+                        }
+                    });
+
+                    cadastrarJogo.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            new RegistroJogoGUI(session).setVisible(true);
+                            dispose();
                         }
                     });
 
@@ -113,7 +121,7 @@ import java.awt.event.ActionListener;
 
                     menuJogos.add(verJogos);
                     menuUsuarios.add(verUsuarios);
-
+                    menuJogos.add(cadastrarJogo);
                     menuBar.add(menuJogos);
                     menuBar.add(menuUsuarios);
 

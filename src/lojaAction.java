@@ -20,14 +20,13 @@ public class lojaAction {
                 if (session.getString("name").equals(jsonObject.getString("name"))) {
                     JSONArray currentBiblioteca = jsonObject.getJSONArray("biblioteca");
                     if (currentBiblioteca.length() > 0){
-                        for (int j = 0; j < jsonArray.length(); j++) {
-                            String element = jsonArray.getString(j);
+                        for (int j = 0; j < currentBiblioteca.length(); j++) {
+                            String element = currentBiblioteca.getString(j);
                             if (element.equals(game.getName())) {
                                 return false;
                             }
                         }
                     }
-
 
                     currentBiblioteca.put(game.getName());
                     jsonObject.put("biblioteca", currentBiblioteca);
