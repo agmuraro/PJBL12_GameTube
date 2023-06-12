@@ -197,7 +197,7 @@ public class profileEditGUI extends JFrame {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                if (temp.getName().equals(jsonObject.getString("name"))) {
+                if (temp.getUsername().equals(jsonObject.getString("username"))) {
                     if (!name.equals(session.getString("name"))) {
                         profileAction.editarNome(temp, name);
                         jsonObject.put("name", temp.getName());
@@ -212,11 +212,6 @@ public class profileEditGUI extends JFrame {
                         profileAction.editarEmail(temp, email);
                         jsonObject.put("email", temp.getEmail());
                         session.put("email", temp.getEmail());
-                    }
-                    if (!username.equals(session.getString("username"))) {
-                        profileAction.editarUsername(temp, username);
-                        jsonObject.put("username", temp.getUsername());
-                        session.put("username", temp.getUsername());
                     }
                     if (selectedFilePath != null && !selectedFilePath.equals(session.getString("imagePath"))) {
                         String destinationPath = "image/" + temp.getUsername() + ".jpg"; // Specify the path for saving the image
@@ -248,6 +243,7 @@ public class profileEditGUI extends JFrame {
             e.printStackTrace();
         }
     }
+
 
 
     public void descartar() {
